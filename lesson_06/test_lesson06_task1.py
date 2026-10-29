@@ -1,3 +1,4 @@
+import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -18,8 +19,15 @@ def test_dynamic_loading():
             EC.visibility_of_element_located((By.CSS_SELECTOR, "#finish h4"))
         )
 
-        driver.save_screenshot("dynamic_loading_screenshot.png")
+        screenshot_path = os.path.join(
+            os.getcwd(), "dynamic_loading_screenshot.png"
+        )
+        driver.save_screenshot(screenshot_path)
 
-        assert hello_world_element.text == "Hello World!"
+        expected_text = "Hello World!"
+        assert hello_world_element.text == expected_text, (
+            f"Ожидался '{expected_text}', "
+            f"получен: '{hello_world_element.text}'"
+        )
     finally:
         driver.quit()
